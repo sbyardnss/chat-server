@@ -30,11 +30,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         if self.path == "/chat":
             content_len = int(self.headers.get('content-length', 0))
             post_body = self.rfile.read(content_len)
-            
             messages = json.loads(post_body)
             chat_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
-            print(chat_completion.choices[0].message.content)            
-            self.wfile.write(json.dumps(chat_completion).encode())
+        response=chat_completion.choices[0].message.content       
+        self.wfile.write(json.dumps(response).encode())
 
     def _set_headers(self, status):
         """Sets the status code, Content-Type and Access-Control-Allow-Origin
